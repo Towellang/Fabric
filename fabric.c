@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
+#include <string.h>
 
 typedef struct {
 	int * content;
@@ -7,11 +9,34 @@ typedef struct {
 	int size;
 } Stack;
 
-int grabcode (const char * filename) {
-	FILE * rawcode;
-	rawcode = fopen(const char * filename, "r");
+char *  grabcode (const char * filename) {
+	FILE * file  = fopen(filename, "r");
+	char * code;
+	char * codearray;
+	size_t n = 0;
+	int c;
 
-	fclose(rawcode);
+	if (file == NULL) return NULL;
+
+	fseek(file, 0, SEEK_END);
+	long f_size = ftell(file);
+	fseek(file, 0, SEEK_SET);
+	code = malloc(f_size);
+
+	while ((c = fgetc(file)) != EOF) {
+		code[n++] = (char)c;
+	}
+
+	code[n] = "\0";
+
+	fclose(file);
+	
+	int i = 0;
+	while (&code[i] != "\0") {
+		
+	}
+
+	return codearray;
 }
 
 int interpret (char * code) {
@@ -43,7 +68,12 @@ int growstack (Stack stack) {
 	return stack;
 }
 
+int panic(char * msg) {
+	printf("An error occured: %s", &msg);
+}
+
 int main ( int argc, char *argv[] ) {
+	// Define stacks
 	Stack stack = {NULL, 0, 10};
 	stack.content = malloc( stack.size * sizeof(int) );
 	Stack loops = {NULL, 0, 6};
@@ -52,7 +82,9 @@ int main ( int argc, char *argv[] ) {
 	if (argc == 1) {
 		repl();
 	} estacklse if (argc == 2) {
-		char * code = grabcode();
+		const char * filename = argv[2];
+
+		char * code = grabcode(filename);
 		interpret(code);
 	}
 
