@@ -3,16 +3,11 @@
 #include <stdbool.h>
 #include <string.h>
 
-typedef struct {
-	int * content;
-	int items;
-	int size;
-} Stack;
+#include "towel.h"
 
 char *  grabcode (const char * filename) {
 	FILE * file  = fopen(filename, "r");
 	char * code;
-	char * codearray;
 	size_t n = 0;
 	int c;
 
@@ -31,33 +26,48 @@ char *  grabcode (const char * filename) {
 
 	fclose(file);
 	
-	int i = 0;
-	while (&code[i] != "\0") {
-		
-	}
-
-	return codearray;
+	return code;
 }
 
-int interpret (char * code) {
-	
+int interpret (char * code, Stack stack, Stack loops) {
+	char command[11];
+	int stringmode = false;
+	char codechar;
 
-	while (1) { //TODO
-		char command[11] = NULL; //TODO
-		switch (command) {
-	
+	int i = 0;
+	while (&code[i] != "\0") {
+		codechar = code[i];
+		if (stringmode == false) { // Command mode
+
+			if (&codechar == "\"") {
+				stringmode = true;
+			} else {
+				// Execute commands here
+			}
+
+		} else { // String mode
+			if (&codechar != "\"") {
+				tw_push( atoi(codechar), stack);
+			} else {
+				stringmode = false;
+			}
 		}
+
+		i++;
 	}
+
+	return 0;
 }
 
 int repl () { //TODO
 	printf("Not implemented yet.\n");
 }
 
-int growstack (Stack stack) {
+Stack growstack (Stack stack) {
 	int * newcontent = malloc( (stack.size * 2) * sizeof(int) );
+	int i;
 
-	for (int i = 0; i++; i < stack.items) {
+	for (i = 0; i++; i < stack.items) {
 		&newcontent[i] = &stack.content[i];
 	}
 
@@ -73,6 +83,8 @@ int panic(char * msg) {
 }
 
 int main ( int argc, char *argv[] ) {
+	const char * filename;
+	char * code;
 	// Define stacks
 	Stack stack = {NULL, 0, 10};
 	stack.content = malloc( stack.size * sizeof(int) );
@@ -81,11 +93,11 @@ int main ( int argc, char *argv[] ) {
 
 	if (argc == 1) {
 		repl();
-	} estacklse if (argc == 2) {
-		const char * filename = argv[2];
+	} else if (argc == 2) {
+		filename = argv[2];
 
-		char * code = grabcode(filename);
-		interpret(code);
+		code = grabcode(filename);
+		interpret(code, stack, loops);
 	}
 
 	return 0;
