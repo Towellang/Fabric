@@ -29,8 +29,20 @@ char *  grabcode (const char * filename) {
 	return code;
 }
 
+Stack execute(char command[11], Stack stack, Stack loops) {
+	if (command == "dump") {
+		tw_dump(stack);
+	} else {
+		panic("Unknown command \"%s\"", command);
+	}
+
+	return stack;
+}
+
+
 int interpret (char * code, Stack stack, Stack loops) {
 	char command[11];
+	int commandi = 0;
 	int stringmode = false;
 	char codechar;
 
@@ -41,13 +53,20 @@ int interpret (char * code, Stack stack, Stack loops) {
 
 			if (&codechar == "\"") {
 				stringmode = true;
-			} else {
-				// Execute commands here
+			} else if (&codechar == " ") { // Reached end of word: execute command
+				execute(command, stack, loops);
+			} else { // Assemble command
+				if (commandi != 11) {
+					command[commandi] = codechar;
+					commandi++;
+				} else {
+					panic("Command longer than 10 characters");
+				}
 			}
 
 		} else { // String mode
 			if (&codechar != "\"") {
-				tw_push( atoi(codechar), stack);
+				tw_push( atoi(code[i]), stack);
 			} else {
 				stringmode = false;
 			}
@@ -68,7 +87,7 @@ Stack growstack (Stack stack) {
 	int i;
 
 	for (i = 0; i++; i < stack.items) {
-		&newcontent[i] = &stack.content[i];
+		newcontent[i] = stack.content[i];
 	}
 
 	free(stack.content);

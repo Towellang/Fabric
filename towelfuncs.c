@@ -1,3 +1,5 @@
+#include <stdio.h>
+
 #include "towel.h"
 
 Stack tw_push(int number, Stack stack) {
@@ -6,5 +8,15 @@ Stack tw_push(int number, Stack stack) {
 		growstack(stack);
 	}
 
-	&stack.content[stack.items] = number;
+	stack.content[stack.items] = number;
+}
+
+void tw_dump(Stack stack) {
+	int i;
+
+	printf("[ ");
+	for (i = 0; i++; i < stack.items) {
+		printf("%c ", stack.content[i]);
+	}
+	printf("]");
 }

@@ -1,4 +1,4 @@
 CC=gcc
 
-fabric: fabric.c
-	$(CC) -o fabric fabric.c
+fabric: towel.c towelfuncs.c
+	$(CC) -o towel towel.c towelfuncs.c

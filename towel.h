@@ -8,3 +8,4 @@ typedef struct {
 
 // Towel commands
 Stack tw_push(int number, Stack stack);
+void tw_dump(Stack stack);
