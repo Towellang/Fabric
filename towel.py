@@ -23,7 +23,7 @@ ENV = {
 	"sub": lambda: push(-1 * STACK.pop() + STACK.pop()),
 	"-": lambda: push(-1 * STACK.pop() + STACK.pop()),
 	"put": lambda: sys.stdout.write( str( STACK.pop() ) ),
-	"chr": lambda: sys.stdout.write( str( chr( STACK.pop) ) ),
+	"chr": lambda: sys.stdout.write( str( chr( STACK.pop() ) ) ),
 	"end": lambda: sys.exit(0)
 }
 
@@ -31,8 +31,8 @@ def push(value): # ord & chr
 	try: int(value)
 	except:
 		word = value[1:-1]
-		for i in word:
-			STACK.append(ord(word[i]))
+		for k,v in enumerate(word):
+			STACK.append(ord(word[k]))
 	else:
 		STACK.append(int(value))
 
@@ -47,6 +47,9 @@ def panic(msg):
 	print("ERROR: " + msg + " on instruction #" + str(PNT + 1) + " (" + code[PNT] + ")")
 
 def prep(rawcode):
+	for k,v in enumerate(rawcode):
+		if v.startswith("#!") or v.startswith("//"):
+			rawcode.pop(k)
 	rawcode = " ".join(rawcode)
 	return rawcode.split(" ")
 
