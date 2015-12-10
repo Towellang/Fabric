@@ -24,7 +24,9 @@ ENV = {
 	"-": lambda: push(-1 * STACK.pop() + STACK.pop()),
 	"put": lambda: sys.stdout.write( str( STACK.pop() ) ),
 	"chr": lambda: sys.stdout.write( str( chr( STACK.pop() ) ) ),
-	"end": lambda: sys.exit(0)
+	"grab": lambda: push(raw_input("")),
+#	"=": lambda: if STACK.pop() != STACK.pop(): PNT += 1,
+	"end": lambda: leave()
 }
 
 def push(value): # ord & chr
@@ -45,6 +47,7 @@ def loop():
 
 def panic(msg):
 	print("ERROR: " + msg + " on instruction #" + str(PNT + 1) + " (" + code[PNT] + ")")
+	sys.exit(1)
 
 def prep(rawcode):
 	for k,v in enumerate(rawcode):
@@ -79,6 +82,10 @@ def repl():
 		interpret(code)
 	print("Go away! No REPL here!")
 
+def leave():
+	print # Trailing newline to fix command prompt
+	sys.exit(0)
+
 if __name__ == "__main__":
 	try:
 		sys.argv[1]
@@ -87,5 +94,4 @@ if __name__ == "__main__":
 	else:
 		code = prep(open(sys.argv[1]).read().split("\n"))
 		interpret(code)
-	
-	print # Trailing newline to fix command prompt
+	leave()
