@@ -99,9 +99,8 @@ def repl():
 	print("Welcome to the REPL")
 	code = []
 	while True:
-		code.append(prep(raw_input(">>> ").split(" ")))
-		interpret(code)
-	print("Go away! No REPL here!")
+		code += prep(raw_input(">>> ").split(" "))
+		interpret(prep(code))
 
 def panic(msg):
 	print("ERROR: " + msg + " on instruction #" + str(PNT + 1) + " (" + code[PNT] + ")")
