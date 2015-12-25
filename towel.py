@@ -26,6 +26,7 @@ ENV = {
 	"+": lambda: push(STACK.pop() + STACK.pop()),
 	"sub": lambda: push(-1 * STACK.pop() + STACK.pop()),
 	"-": lambda: push(-1 * STACK.pop() + STACK.pop()),
+	"/": lambda: push(STACK.pop() / STACK.pop()),
 
 	"put": lambda: sys.stdout.write( str( STACK.pop() ) ),
 	"chr": lambda: sys.stdout.write( str( chr( STACK.pop() ) ) ),
@@ -40,7 +41,6 @@ ENV = {
 	"clone": lambda: STACK.extend(STACK),
 	"grab": lambda: push(raw_input("")),
 	"break": lambda: breakmode(),
-#	"=": lambda: if STACK.pop() != STACK.pop(): PNT += 1,
 	"end": lambda: leave()
 }
 
