@@ -12,22 +12,30 @@ BREAK = False # Break mode
 ENV = {
 	"[": lambda: LOOPS.append(PNT),
 	"]": lambda: loop(),
+
 	"drop": lambda: STACK.pop(),
 	"dup": lambda: push(str(STACK[-1])) if STACK != [] else panic("Tried dupping on an empty stack"),
 	"rand": lambda: push(str(random.randint(0, 99))), # Converted to string so push doesn't lose its shit
 	"dump": lambda: sys.stdout.write(str(STACK)),
 	"rev": lambda: STACK.reverse(),
+
 	"raise": lambda: STACK.insert(0, STACK.pop()),
 	"lower": lambda: STACK.insert(len(STACK), STACK.pop(0)),
+
 	"add": lambda: push(STACK.pop() + STACK.pop()),
 	"+": lambda: push(STACK.pop() + STACK.pop()),
 	"sub": lambda: push(-1 * STACK.pop() + STACK.pop()),
 	"-": lambda: push(-1 * STACK.pop() + STACK.pop()),
+
 	"put": lambda: sys.stdout.write( str( STACK.pop() ) ),
 	"chr": lambda: sys.stdout.write( str( chr( STACK.pop() ) ) ),
+
 	"=": lambda: logic(True) if STACK.pop() == STACK.pop() else logic(False),
 	">": lambda: logic(True) if STACK.pop() > STACK.pop() else logic(False),
+	">=": lambda: logic(True) if STACK.pop() >= STACK.pop() else logic(False),
 	"<": lambda: logic(True) if STACK.pop() < STACK.pop() else logic(False),
+	"<=": lambda: logic(True) if STACK.pop() <= STACK.pop() else logic(False),
+
 	"swap": lambda: swap(),
 	"clone": lambda: STACK.extend(STACK),
 	"grab": lambda: push(raw_input("")),
@@ -61,7 +69,7 @@ def swap():
 
 def logic(bvar):
 	global PNT
-	if bvar != True:
+	if bvar == False:
 		PNT += 1
 
 def prep(rawcode):
